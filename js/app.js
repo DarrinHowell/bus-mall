@@ -25,11 +25,19 @@ function Item(pathName, itemName) {
   this.numVotes = 0;
   this.numViews = 0;
   this.isDisplayed = false;
+  this.justDisplayed = false;
+
+  this.hold = 0;
+  if(this.justDisplayed === true && this.hold <= 1){
+    this.hold++;
+  } else {
+    this.justDisplayed = false;
+  }
 
   Item.allItems.push(this);
 }
 
-Item.prototype.isDisplayedSwitch = function(){
+Item.prototype.justDisplayedSwitch = function(){
 
 };
 
@@ -93,48 +101,57 @@ function randomDisplayGenerator() {
       displayCount++;
     }
   }
+
+  for(var i = 0; i < Item.display.length; i++){
+    Item.display[i].isDisplayed = false;
+    Item.display[i].justDisplayed = true;
+  }
   // console.log(Item.display);
 }
 
-// var imgElement1.src = Item.display
-// var imgElement2
-// var imgElement3
 
 
-randomDisplayGenerator();
-
-
-function randomItem1() {
-
+function randomItem() {
+  // items will already be in the display queue
   // increase num votes of first item
   numClicks++;
+  console.log('click counts = ', numClicks);
   Item.display[0].numVotes++;
   console.log('Num Votes of ' + Item.display[0].itemName + ' is ' + Item.display[0].numVotes);
 
   // increase num views of each item
   for(var i = 0; i < Item.display.length; i++){
     Item.display[i].numViews++;
+    Item.display[i].justDisplayed = true;
+    Item.display[i].isDisplayed = false;
     console.log('Num Views of ' + Item.display[i].itemName + ' is ' + Item.display[i].numViews);
   }
+
+  Item.display = [];
+
 
   // generate new set of items to look through
   var displayCount = 0;
   while(displayCount < 3){
     var selectedItem = Item.allItems[Math.floor(Math.random() * (Item.allItems.length-displayCount))];
-    if(selectedItem.isDisplayed === false){ //){
+    if(selectedItem.isDisplayed === false && selectedItem.justDisplayed === false){
       selectedItem.isDisplayed = true;
+      selectedItem.justDisplayed = true;
       imgElements[displayCount].src = selectedItem.pathName;
       imgElements[displayCount].alt = selectedItem.itemName;
       Item.display.push(selectedItem);
       displayCount++;
     }
   }
+
 }
 
+randomDisplayGenerator();
 
-imgElement1.addEventListener('click', randomItem1);
-imgElement2.addEventListener('click', randomItem1);
-imgElement3.addEventListener('click', randomItem1);
+
+imgElement1.addEventListener('click', randomItem);
+imgElement2.addEventListener('click', randomItem);
+imgElement3.addEventListener('click', randomItem);
 
 
 
