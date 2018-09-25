@@ -29,6 +29,10 @@ function Item(pathName, itemName) {
   Item.allItems.push(this);
 }
 
+Item.prototype.isDisplayedSwitch = function(){
+
+};
+
 Item.allItems = [];
 Item.display = [];
 Item.noDisplay = [];
@@ -46,7 +50,7 @@ new Item('img/breakfast.jpg', 'breakfast');
 new Item('img/bubblegum.jpg', 'bubblegum');
 new Item('img/chair.jpg', 'chair');
 new Item('img/cthulhu.jpg', 'cthulhu');
-new Item('img/dog.jpg', 'dog');
+new Item('img/dog-duck.jpg', 'dog');
 new Item('img/dragon.jpg', 'dragon');
 new Item('img/pen.jpg', 'pen');
 new Item('img/pet-sweep.jpg', 'pet-sweep');
@@ -105,14 +109,15 @@ function randomItem1() {
   // increase num votes of first item
   numClicks++;
   Item.display[0].numVotes++;
-  console.log('Num Votes of ' + Item.display[i].itemName + ' is ' + Item.display[i].numVotes);
+  console.log('Num Votes of ' + Item.display[0].itemName + ' is ' + Item.display[0].numVotes);
 
-    // increase num views of each item
+  // increase num views of each item
   for(var i = 0; i < Item.display.length; i++){
     Item.display[i].numViews++;
     console.log('Num Views of ' + Item.display[i].itemName + ' is ' + Item.display[i].numViews);
   }
 
+  // generate new set of items to look through
   var displayCount = 0;
   while(displayCount < 3){
     var selectedItem = Item.allItems[Math.floor(Math.random() * (Item.allItems.length-displayCount))];
@@ -127,29 +132,9 @@ function randomItem1() {
 }
 
 
-
-function randomItem1() {
-  // want to generate three unique random numbers according to the
-  // size of the array and the numbers generated previously.
-  // get a for loop going here to handle repeating nature of code.
-
-  var randNum1 = Math.floor(Math.random() * Item.allItems.length);
-  var randNum2 = Math.floor(Math.random() * Item.allItems.length-1);
-  var randNum3 = Math.floor(Math.random() * Item.allItems.length-2);
-  imgElement1.scr = Item.allItems[randNum1].pathName;
-  imgElement2.scr = Item.allItems[randNum2].pathName;
-  imgElement3.scr = Item.allItems[randNum3].pathName;
-
-
-
-  numClicks++;
-
-}
-
-
 imgElement1.addEventListener('click', randomItem1);
-//imgElement2.addEventListener('click', randomItem2);
-//imgElement3.addEventListener('click', randomItem3);
+imgElement2.addEventListener('click', randomItem1);
+imgElement3.addEventListener('click', randomItem1);
 
 
 
