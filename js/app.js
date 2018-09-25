@@ -2,9 +2,15 @@
 
 // Initialize DOM variables
 var numClicks = 0;
+var imgElements = [];
 var imgElement1 = document.getElementById('bus-item1');
 var imgElement2 = document.getElementById('bus-item2');
 var imgElement3 = document.getElementById('bus-item3');
+
+imgElements.push(imgElement1);
+imgElements.push(imgElement2);
+imgElements.push(imgElement3);
+
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -16,7 +22,7 @@ var imgElement3 = document.getElementById('bus-item3');
 function Item(pathName, itemName) {
   this.pathName = pathName;
   this.itemName = itemName;
-  this.numClicks = 0;
+  this.numVotes = 0;
   this.numViews = 0;
   this.isDisplayed = false;
 
@@ -68,23 +74,58 @@ new Item('img/wine-glass.jpg', 'wine-glass');
 // imgs shouldn't duplicate in current window)
 
 function randomDisplayGenerator() {
-  var selectedItem = Item.allItems[Math.floor(Math.random() * Item.allItems.length)];
-  Item.display.push(selectedItem);
-  Item.allItems.isDisplayed = true;
+//   var selectedItem = Item.allItems[Math.floor(Math.random() * Item.allItems.length)];
+//   Item.display.push(selectedItem);
+//   Item.allItems.isDisplayed = true;
 
   var displayCount = 0;
-  while(displayCount < 2){
-    selectedItem = Item.allItems[Math.floor(Math.random() * Item.allItems.length)];
+  while(displayCount < 3){
+    var selectedItem = Item.allItems[Math.floor(Math.random() * (Item.allItems.length-displayCount))];
     if(selectedItem.isDisplayed === false){
+      selectedItem.isDisplayed = true;
+      imgElements[displayCount].src = selectedItem.pathName;
+      imgElements[displayCount].alt = selectedItem.itemName;
       Item.display.push(selectedItem);
       displayCount++;
     }
   }
-
-
-
-
+  // console.log(Item.display);
 }
+
+// var imgElement1.src = Item.display
+// var imgElement2
+// var imgElement3
+
+
+randomDisplayGenerator();
+
+
+function randomItem1() {
+
+  // increase num votes of first item
+  numClicks++;
+  Item.display[0].numVotes++;
+  console.log('Num Votes of ' + Item.display[i].itemName + ' is ' + Item.display[i].numVotes);
+
+    // increase num views of each item
+  for(var i = 0; i < Item.display.length; i++){
+    Item.display[i].numViews++;
+    console.log('Num Views of ' + Item.display[i].itemName + ' is ' + Item.display[i].numViews);
+  }
+
+  var displayCount = 0;
+  while(displayCount < 3){
+    var selectedItem = Item.allItems[Math.floor(Math.random() * (Item.allItems.length-displayCount))];
+    if(selectedItem.isDisplayed === false){ //){
+      selectedItem.isDisplayed = true;
+      imgElements[displayCount].src = selectedItem.pathName;
+      imgElements[displayCount].alt = selectedItem.itemName;
+      Item.display.push(selectedItem);
+      displayCount++;
+    }
+  }
+}
+
 
 
 function randomItem1() {
