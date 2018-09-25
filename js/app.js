@@ -18,6 +18,7 @@ function Item(pathName, itemName) {
   this.itemName = itemName;
   this.numClicks = 0;
   this.numViews = 0;
+  this.isDisplayed = false;
 
   Item.allItems.push(this);
 }
@@ -66,28 +67,23 @@ new Item('img/wine-glass.jpg', 'wine-glass');
 // Imgs shouldn't repeat from previous window
 // imgs shouldn't duplicate in current window)
 
-var randNums = [];
-function randomItemGenerator() {
-  // need to add items to display array
-  var randCount = 0;
-  var numDisplayed = 3;
-  randNums.push(Math.floor(Math.random() * Item.allItems.length));
-  for(var i = 0; i < numDisplayed-1; i++){
-    // generate random number
-    // check to see if it matches any in the array
-    // if it does, repeat generation of random number (i--)
-    var randNumber = (Math.floor(Math.random() * Item.allItems.length));
-    for(var j = 0; j < randNums.length; j++){
-      if(randNumber === randNums[j]){
-        randCount++;
-      }
-    }
-    if(randCount === 0){
-      randNums.push(randNumber);
-    } else {
-      i--;
+function randomDisplayGenerator() {
+  var selectedItem = Item.allItems[Math.floor(Math.random() * Item.allItems.length)];
+  Item.display.push(selectedItem);
+  Item.allItems.isDisplayed = true;
+
+  var displayCount = 0;
+  while(displayCount < 2){
+    selectedItem = Item.allItems[Math.floor(Math.random() * Item.allItems.length)];
+    if(selectedItem.isDisplayed === false){
+      Item.display.push(selectedItem);
+      displayCount++;
     }
   }
+
+
+
+
 }
 
 
@@ -111,8 +107,8 @@ function randomItem1() {
 
 
 imgElement1.addEventListener('click', randomItem1);
-imgElement2.addEventListener('click', randomItem2);
-imgElement3.addEventListener('click', randomItem3);
+//imgElement2.addEventListener('click', randomItem2);
+//imgElement3.addEventListener('click', randomItem3);
 
 
 
