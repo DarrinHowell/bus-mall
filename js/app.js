@@ -1,5 +1,6 @@
 'use strict';
 
+
 // Initialize DOM elements and global variables
 var maxClicks = 25;
 var imgElement0 = document.getElementById('bus-item0');
@@ -25,8 +26,8 @@ function Item(pathName, itemName) {
   Item.allItems.push(this);
 }
 
-Item.prototype.justDisplayedSwitch = function(){
-
+Item.prototype.calculateVotePercent = function(){
+  return Math.round(this.numVotes / this.numViews * 100);
 };
 
 Item.allItems = [];
@@ -98,16 +99,66 @@ function randomDisplayGenerator() {
   Item.lastDisplayed[2] = rand2;
 }
 
-function generateResults(){
-  var ul = document.getElementById('results-list');
-  for(var i = 0; i < Item.allItems.length; i++){
-    var li = document.createElement('li');
-    var resultsText = Item.allItems[i].itemName + ' was viewed ' + Item.allItems[i].numViews +
-          ' times and voted on ' + Item.allItems[i].numVotes + ' times.';
-    var liText = document.createTextNode(resultsText);
-    li.appendChild(liText);
-    ul.appendChild(li);
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
   }
+  return color;
+}
+
+
+function generateResults(){
+
+  var focusResults = [];
+  var nameLabels = [];
+  var barColors = [];
+  var borderColors = [];
+
+  for(var i = 0; i < Item.allItems.length; i++){
+    focusResults.push(Item.allItems[i].calculateVotePercent());
+    nameLabels.push(Item.allItems[i].itemName);
+    barColors.push(getRandomColor());
+    borderColors.push(getRandomColor());
+
+  }
+  
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: nameLabels,
+      datasets: [{
+        label: 'Voting Percentages',
+        data: focusResults,
+        backgroundColor: barColors,
+        borderColor: borderColors,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero:true
+          }
+        }]
+      }
+    }
+  });
+}
+
+function setEventListeners() {
+  imgElement0.addEventListener('click', clickHandler);
+  imgElement1.addEventListener('click', clickHandler);
+  imgElement2.addEventListener('click', clickHandler);
+}
+
+function removeEventListeners(){
+  imgElement0.removeEventListener('click', clickHandler);
+  imgElement1.removeEventListener('click', clickHandler);
+  imgElement2.removeEventListener('click', clickHandler);
 }
 
 function setEventListeners() {
@@ -135,6 +186,7 @@ function clickHandler(event) {
   }
 
   randomDisplayGenerator();
+
   if(maxClicks < 1){
     generateResults();
     removeEventListeners();
