@@ -2,7 +2,7 @@
 
 
 // Initialize DOM elements and global variables
-var maxClicks = 25;
+var maxClicks = 20;
 var imgElement0 = document.getElementById('bus-item0');
 var imgElement1 = document.getElementById('bus-item1');
 var imgElement2 = document.getElementById('bus-item2');
@@ -124,6 +124,7 @@ function generateResults(){
 
   }
   
+  
   var ctx = document.getElementById('myChart').getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'bar',
@@ -147,18 +148,6 @@ function generateResults(){
       }
     }
   });
-}
-
-function setEventListeners() {
-  imgElement0.addEventListener('click', clickHandler);
-  imgElement1.addEventListener('click', clickHandler);
-  imgElement2.addEventListener('click', clickHandler);
-}
-
-function removeEventListeners(){
-  imgElement0.removeEventListener('click', clickHandler);
-  imgElement1.removeEventListener('click', clickHandler);
-  imgElement2.removeEventListener('click', clickHandler);
 }
 
 function setEventListeners() {
