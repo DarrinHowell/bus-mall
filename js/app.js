@@ -1,6 +1,6 @@
 'use strict';
 
-// Initialize DOM variables
+// Initialize DOM elements and global variables
 var maxClicks = 25;
 var imgElement0 = document.getElementById('bus-item0');
 var imgElement1 = document.getElementById('bus-item1');
@@ -63,7 +63,7 @@ new Item('img/wine-glass.jpg', 'wine-glass');
 //////////////////////////////////////////////////////////////////////////////////
 
 
-// generate random images
+// script functions
 
 function randomDisplayGenerator() {
   var rand0 = Math.floor(Math.random() * Item.allItems.length);
@@ -102,7 +102,7 @@ function generateResults(){
   var ul = document.getElementById('results-list');
   for(var i = 0; i < Item.allItems.length; i++){
     var li = document.createElement('li');
-    var resultsText = Item.allItems[i].itemName + ' was viewed ' + Item.allItems[i].numViews + 
+    var resultsText = Item.allItems[i].itemName + ' was viewed ' + Item.allItems[i].numViews +
           ' times and voted on ' + Item.allItems[i].numVotes + ' times.';
     var liText = document.createTextNode(resultsText);
     li.appendChild(liText);
@@ -110,7 +110,17 @@ function generateResults(){
   }
 }
 
-randomDisplayGenerator();
+function setEventListeners() {
+  imgElement0.addEventListener('click', clickHandler);
+  imgElement1.addEventListener('click', clickHandler);
+  imgElement2.addEventListener('click', clickHandler);
+}
+
+function removeEventListeners(){
+  imgElement0.removeEventListener('click', clickHandler);
+  imgElement1.removeEventListener('click', clickHandler);
+  imgElement2.removeEventListener('click', clickHandler);
+}
 
 
 function clickHandler(event) {
@@ -127,14 +137,17 @@ function clickHandler(event) {
   randomDisplayGenerator();
   if(maxClicks < 1){
     generateResults();
+    removeEventListeners();
   }
 
 }
 
+//////////////////////////////////////////////////////////////////////////////////
 
-imgElement0.addEventListener('click', clickHandler);
-imgElement1.addEventListener('click', clickHandler);
-imgElement2.addEventListener('click', clickHandler);
+// run functions
 
+randomDisplayGenerator();
+
+setEventListeners();
 
 
