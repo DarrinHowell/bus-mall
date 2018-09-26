@@ -162,18 +162,6 @@ function removeEventListeners(){
   imgElement2.removeEventListener('click', clickHandler);
 }
 
-function setEventListeners() {
-  imgElement0.addEventListener('click', clickHandler);
-  imgElement1.addEventListener('click', clickHandler);
-  imgElement2.addEventListener('click', clickHandler);
-}
-
-function removeEventListeners(){
-  imgElement0.removeEventListener('click', clickHandler);
-  imgElement1.removeEventListener('click', clickHandler);
-  imgElement2.removeEventListener('click', clickHandler);
-}
-
 
 function clickHandler(event) {
   // target specific event that was clicked
