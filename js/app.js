@@ -2,7 +2,7 @@
 
 
 // Initialize DOM elements and global variables
-var maxClicks = 25;
+var maxClicks = 20;
 var imgElement0 = document.getElementById('bus-item0');
 var imgElement1 = document.getElementById('bus-item1');
 var imgElement2 = document.getElementById('bus-item2');
