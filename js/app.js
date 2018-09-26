@@ -1,15 +1,11 @@
 'use strict';
 
 // Initialize DOM variables
-var maxClicks = 5;
-var imgElements = [];
+var maxClicks = 25;
 var imgElement0 = document.getElementById('bus-item0');
 var imgElement1 = document.getElementById('bus-item1');
 var imgElement2 = document.getElementById('bus-item2');
 
-imgElements.push(imgElement0);
-imgElements.push(imgElement1);
-imgElements.push(imgElement2);
 
 
 
@@ -102,11 +98,22 @@ function randomDisplayGenerator() {
   Item.lastDisplayed[2] = rand2;
 }
 
+function generateResults(){
+  var ul = document.getElementById('results-list');
+  for(var i = 0; i < Item.allItems.length; i++){
+    var li = document.createElement('li');
+    var resultsText = Item.allItems[i].itemName + ' was viewed ' + Item.allItems[i].numViews + 
+          ' times and voted on ' + Item.allItems[i].numVotes + ' times.';
+    var liText = document.createTextNode(resultsText);
+    li.appendChild(liText);
+    ul.appendChild(li);
+  }
+}
+
 randomDisplayGenerator();
 
+
 function clickHandler(event) {
-
-
   // target specific event that was clicked
   var clickedImageName = event.target.alt;
   for(var i = 0; i < Item.allItems.length; i++){
@@ -118,6 +125,9 @@ function clickHandler(event) {
   }
 
   randomDisplayGenerator();
+  if(maxClicks < 1){
+    generateResults();
+  }
 
 }
 
@@ -137,110 +147,3 @@ imgElement2.addEventListener('click', clickHandler);
 // (need to manipulate the DOM in order to display our item.)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////////
-
-//   var selectedItem = Item.allItems[Math.floor(Math.random() * Item.allItems.length)];
-//   Item.display.push(selectedItem);
-//   Item.allItems.isDisplayed = true;
-
-//   var displayCount = 0;
-//   while(displayCount < 3){
-//     var selectedItem = Item.allItems[Math.floor(Math.random() * (Item.allItems.length-displayCount))];
-//     if(selectedItem.isDisplayed === false){
-//       selectedItem.isDisplayed = true;
-//       imgElements[displayCount].src = selectedItem.pathName;
-//       imgElements[displayCount].alt = selectedItem.itemName;
-//       Item.display.push(selectedItem);
-//       displayCount++;
-//     }
-//   }
-
-//   for(var i = 0; i < Item.display.length; i++){
-//     Item.display[i].isDisplayed = false;
-//     Item.display[i].justDisplayed = true;
-//   }
-//   // console.log(Item.display);
-// }
-
-
-
-// function randomItem() {
-//   // items will already be in the display queue
-//   // increase num votes of first item
-//   numClicks++;
-//   console.log('click counts = ', numClicks);
-//   Item.display[0].numVotes++;
-//   console.log('Num Votes of ' + Item.display[0].itemName + ' is ' + Item.display[0].numVotes);
-
-//   // increase num views of each item
-//   for(var i = 0; i < Item.display.length; i++){
-//     Item.display[i].numViews++;
-//     Item.display[i].justDisplayed = true;
-//     console.log('Num Views of ' + Item.display[i].itemName + ' is ' + Item.display[i].numViews);
-//   }
-
-//   Item.display = [];
-
-
-//   // generate new set of items to look through
-//   var displayCount = 0;
-//   while(displayCount < 3){ // running into a problem here, infinite loop.
-//     var selectedItem = Item.allItems[Math.floor(Math.random() * (Item.allItems.length-displayCount))];
-//     if(selectedItem.isDisplayed === false){} //&& selectedItem.justDisplayed === false){
-//       selectedItem.isDisplayed = true;
-//       selectedItem.justDisplayed = true;
-//       imgElements[displayCount].src = selectedItem.pathName;
-//       imgElements[displayCount].alt = selectedItem.itemName;
-//       Item.display.push(selectedItem); // or replace at specific indices.
-//       displayCount++;
-//     }
-//   }
-
-//   Item.display = [];
-
-// }
-
-// function randomDisplayGenerator() {
-//     var selectedItem = Item.allItems[Math.floor(Math.random() * (Item.allItems.length))];
-//     Item.display.push(selectedItem);
-//     imgElements[0].src = selectedItem.pathName;
-//     imgElements[0].alt = selectedItem.itemName;
-//     var displayCount = 1;
-//     while(displayCount < 3){
-//       console.log('we made it inside the while loop');
-//       selectedItem = Item.allItems[Math.floor(Math.random() * (Item.allItems.length))];
-//       for(var j = 0; j < Item.display.length; j++){
-//         console.log('we made it inside the for loop');
-//         if(selectedItem.itemName === Item.display[j].itemName){
-//           break;
-//         } else if(selectedItem.itemName !== Item.display[j].itemName && j === Item.display.length-1){
-//           Item.display.push(selectedItem);
-//           imgElements[j+1].src = selectedItem.pathName;
-//           imgElements[j+1].alt = selectedItem.itemName;
-//           displayCount++;
-//           console.log('we made it inside the last else if block');
-//           console.log('display count is ', displayCount);
-//         }
-//       }
-
-//     }
-//     console.log(Item.display);
-//   }
