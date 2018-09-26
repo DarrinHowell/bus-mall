@@ -1,7 +1,8 @@
 'use strict';
 
 // Initialize DOM variables
-var maxClicks = 25;
+var maxClicks = 10;
+var imgContainer = document.getElementById('img-container');
 var imgElement0 = document.getElementById('bus-item0');
 var imgElement1 = document.getElementById('bus-item1');
 var imgElement2 = document.getElementById('bus-item2');
@@ -25,8 +26,8 @@ function Item(pathName, itemName) {
   Item.allItems.push(this);
 }
 
-Item.prototype.justDisplayedSwitch = function(){
-
+Item.prototype.calculateVotePercent = function(){
+  return Math.round(this.numVotes / this.numViews * 100);
 };
 
 Item.allItems = [];
@@ -99,18 +100,69 @@ function randomDisplayGenerator() {
 }
 
 function generateResults(){
-  var ul = document.getElementById('results-list');
+
+  var focusResults = [];
+  var labels = [];
+  var barColors = [];
+  var borderColors = [];
+
   for(var i = 0; i < Item.allItems.length; i++){
-    var li = document.createElement('li');
-    var resultsText = Item.allItems[i].itemName + ' was viewed ' + Item.allItems[i].numViews + 
-          ' times and voted on ' + Item.allItems[i].numVotes + ' times.';
-    var liText = document.createTextNode(resultsText);
-    li.appendChild(liText);
-    ul.appendChild(li);
+    focusResults.push(Item.allItems[i].calculateVotePercent());
   }
+  console.log(focusResults);
+
+  // var ctx = document.getElementById('myChart').getContext('2d');
+  // var myChart = new Chart(ctx, {
+  //   type: 'bar',
+  //   data: {
+  //     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  //     datasets: [{
+  //       label: '# of Votes',
+  //       data: [12, 19, 3, 5, 2, 3],
+  //       backgroundColor: [
+  //         'rgba(255, 99, 132, 0.2)',
+  //         'rgba(54, 162, 235, 0.2)',
+  //         'rgba(255, 206, 86, 0.2)',
+  //         'rgba(75, 192, 192, 0.2)',
+  //         'rgba(153, 102, 255, 0.2)',
+  //         'rgba(255, 159, 64, 0.2)'
+  //       ],
+  //       borderColor: [
+  //         'rgba(255,99,132,1)',
+  //         'rgba(54, 162, 235, 1)',
+  //         'rgba(255, 206, 86, 1)',
+  //         'rgba(75, 192, 192, 1)',
+  //         'rgba(153, 102, 255, 1)',
+  //         'rgba(255, 159, 64, 1)'
+  //       ],
+  //       borderWidth: 1
+  //     }]
+  //   },
+  //   options: {
+  //     scales: {
+  //       yAxes: [{
+  //         ticks: {
+  //           beginAtZero:true
+  //         }
+  //       }]
+  //     }
+  //   }
+  // });
 }
 
 randomDisplayGenerator();
+
+function setEventListeners() {
+  imgElement0.addEventListener('click', clickHandler);
+  imgElement1.addEventListener('click', clickHandler);
+  imgElement2.addEventListener('click', clickHandler);
+}
+
+function removeEventListeners(){
+  imgElement0.removeEventListener('click', clickHandler);
+  imgElement1.removeEventListener('click', clickHandler);
+  imgElement2.removeEventListener('click', clickHandler);
+}
 
 
 function clickHandler(event) {
@@ -125,16 +177,18 @@ function clickHandler(event) {
   }
 
   randomDisplayGenerator();
+
   if(maxClicks < 1){
     generateResults();
+    removeEventListeners();
   }
 
 }
 
+setEventListeners();
 
-imgElement0.addEventListener('click', clickHandler);
-imgElement1.addEventListener('click', clickHandler);
-imgElement2.addEventListener('click', clickHandler);
+
+
 
 
 
