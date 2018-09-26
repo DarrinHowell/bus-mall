@@ -1,7 +1,8 @@
 'use strict';
 
-// Initialize DOM variables
-var maxClicks = 10;
+
+// Initialize DOM elements and global variables
+var maxClicks = 25;
 var imgElement0 = document.getElementById('bus-item0');
 var imgElement1 = document.getElementById('bus-item1');
 var imgElement2 = document.getElementById('bus-item2');
@@ -63,7 +64,7 @@ new Item('img/wine-glass.jpg', 'wine-glass');
 //////////////////////////////////////////////////////////////////////////////////
 
 
-// generate random images
+// script functions
 
 function randomDisplayGenerator() {
   var rand0 = Math.floor(Math.random() * Item.allItems.length);
@@ -120,6 +121,7 @@ function generateResults(){
     nameLabels.push(Item.allItems[i].itemName);
     barColors.push(getRandomColor());
     borderColors.push(getRandomColor());
+
   }
   
   var ctx = document.getElementById('myChart').getContext('2d');
@@ -147,7 +149,17 @@ function generateResults(){
   });
 }
 
-randomDisplayGenerator();
+function setEventListeners() {
+  imgElement0.addEventListener('click', clickHandler);
+  imgElement1.addEventListener('click', clickHandler);
+  imgElement2.addEventListener('click', clickHandler);
+}
+
+function removeEventListeners(){
+  imgElement0.removeEventListener('click', clickHandler);
+  imgElement1.removeEventListener('click', clickHandler);
+  imgElement2.removeEventListener('click', clickHandler);
+}
 
 function setEventListeners() {
   imgElement0.addEventListener('click', clickHandler);
@@ -182,10 +194,12 @@ function clickHandler(event) {
 
 }
 
+//////////////////////////////////////////////////////////////////////////////////
+
+// run functions
+
+randomDisplayGenerator();
+
 setEventListeners();
-
-
-
-
 
 
