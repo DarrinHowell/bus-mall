@@ -138,12 +138,3 @@ imgElement2.addEventListener('click', clickHandler);
 
 
 
-// turn off clicks after 25 trials
-// display user data: num votes and num appearances
-// ... for each item
-
-// css display images side by side by side
-// will want to ensure that imgs are less than a third of the page.
-// (need to manipulate the DOM in order to display our item.)
-
-
