@@ -1,4 +1,7 @@
-#bus-item1, #bus-item2, #bus-item3 {
+img {
     display: inline-block;
     margin: 2%;
+    object-fit: contain;
+    width: 10%;
+    height: 10%;
 }
