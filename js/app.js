@@ -2,7 +2,6 @@
 
 // Initialize DOM variables
 var maxClicks = 10;
-var imgContainer = document.getElementById('img-container');
 var imgElement0 = document.getElementById('bus-item0');
 var imgElement1 = document.getElementById('bus-item1');
 var imgElement2 = document.getElementById('bus-item2');
@@ -99,55 +98,53 @@ function randomDisplayGenerator() {
   Item.lastDisplayed[2] = rand2;
 }
 
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+
 function generateResults(){
 
   var focusResults = [];
-  var labels = [];
+  var nameLabels = [];
   var barColors = [];
   var borderColors = [];
 
   for(var i = 0; i < Item.allItems.length; i++){
     focusResults.push(Item.allItems[i].calculateVotePercent());
+    nameLabels.push(Item.allItems[i].itemName);
+    barColors.push(getRandomColor());
+    borderColors.push(getRandomColor());
   }
-  console.log(focusResults);
-
-  // var ctx = document.getElementById('myChart').getContext('2d');
-  // var myChart = new Chart(ctx, {
-  //   type: 'bar',
-  //   data: {
-  //     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-  //     datasets: [{
-  //       label: '# of Votes',
-  //       data: [12, 19, 3, 5, 2, 3],
-  //       backgroundColor: [
-  //         'rgba(255, 99, 132, 0.2)',
-  //         'rgba(54, 162, 235, 0.2)',
-  //         'rgba(255, 206, 86, 0.2)',
-  //         'rgba(75, 192, 192, 0.2)',
-  //         'rgba(153, 102, 255, 0.2)',
-  //         'rgba(255, 159, 64, 0.2)'
-  //       ],
-  //       borderColor: [
-  //         'rgba(255,99,132,1)',
-  //         'rgba(54, 162, 235, 1)',
-  //         'rgba(255, 206, 86, 1)',
-  //         'rgba(75, 192, 192, 1)',
-  //         'rgba(153, 102, 255, 1)',
-  //         'rgba(255, 159, 64, 1)'
-  //       ],
-  //       borderWidth: 1
-  //     }]
-  //   },
-  //   options: {
-  //     scales: {
-  //       yAxes: [{
-  //         ticks: {
-  //           beginAtZero:true
-  //         }
-  //       }]
-  //     }
-  //   }
-  // });
+  
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: nameLabels,
+      datasets: [{
+        label: 'Voting Percentages',
+        data: focusResults,
+        backgroundColor: barColors,
+        borderColor: borderColors,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero:true
+          }
+        }]
+      }
+    }
+  });
 }
 
 randomDisplayGenerator();
