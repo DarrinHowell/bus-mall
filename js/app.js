@@ -2,7 +2,7 @@
 
 
 // Initialize DOM elements and global variables
-var maxClicks = 20;
+var maxClicks = 25;
 var imgElement0 = document.getElementById('bus-item0');
 var imgElement1 = document.getElementById('bus-item1');
 var imgElement2 = document.getElementById('bus-item2');
@@ -26,10 +26,6 @@ function Item(pathName, itemName) {
   Item.allItems.push(this);
 }
 
-Item.prototype.calculateVotePercent = function(){
-  return Math.round(this.numVotes / this.numViews * 100);
-};
-
 Item.allItems = [];
 Item.lastDisplayed = [];
 
@@ -38,27 +34,38 @@ Item.lastDisplayed = [];
 
 
 // instantiate items and throw them on the master list
-new Item('img/bag.jpg', 'bag');
-new Item('img/banana.jpg', 'banana');
-new Item('img/bathroom.jpg', 'bathroom');
-new Item('img/boots.jpg', 'boots');
-new Item('img/breakfast.jpg', 'breakfast');
-new Item('img/bubblegum.jpg', 'bubblegum');
-new Item('img/chair.jpg', 'chair');
-new Item('img/cthulhu.jpg', 'cthulhu');
-new Item('img/dog-duck.jpg', 'dog');
-new Item('img/dragon.jpg', 'dragon');
-new Item('img/pen.jpg', 'pen');
-new Item('img/pet-sweep.jpg', 'pet-sweep');
-new Item('img/scissors.jpg', 'scissors');
-new Item('img/shark.jpg', 'shark');
-new Item('img/sweep.png', 'sweep');
-new Item('img/tauntaun.jpg', 'tauntaun');
-new Item('img/unicorn.jpg', 'unicorn');
-new Item('img/usb.gif', 'usb');
-new Item('img/water-can.jpg', 'water-can');
-new Item('img/wine-glass.jpg', 'wine-glass');
+// if this list does not exist in localStorage, populate local storage with it
+var itemsStored = localStorage.getItem('items');
 
+if (!itemsStored){
+  new Item('img/bag.jpg', 'bag');
+  new Item('img/banana.jpg', 'banana');
+  new Item('img/bathroom.jpg', 'bathroom');
+  new Item('img/boots.jpg', 'boots');
+  new Item('img/breakfast.jpg', 'breakfast');
+  new Item('img/bubblegum.jpg', 'bubblegum');
+  new Item('img/chair.jpg', 'chair');
+  new Item('img/cthulhu.jpg', 'cthulhu');
+  new Item('img/dog-duck.jpg', 'dog');
+  new Item('img/dragon.jpg', 'dragon');
+  new Item('img/pen.jpg', 'pen');
+  new Item('img/pet-sweep.jpg', 'pet-sweep');
+  new Item('img/scissors.jpg', 'scissors');
+  new Item('img/shark.jpg', 'shark');
+  new Item('img/sweep.png', 'sweep');
+  new Item('img/tauntaun.jpg', 'tauntaun');
+  new Item('img/unicorn.jpg', 'unicorn');
+  new Item('img/usb.gif', 'usb');
+  new Item('img/water-can.jpg', 'water-can');
+  new Item('img/wine-glass.jpg', 'wine-glass');
+
+  // immediately set these items to local storage in the browser
+  localStorage.setItem('items', JSON.stringify(Item.allItems));
+
+} else {
+  // we have grabbed the JSON object from local storage, and we now need to parse it to unpack it
+  Item.allItems = JSON.parse(itemsStored);
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -67,6 +74,7 @@ new Item('img/wine-glass.jpg', 'wine-glass');
 // script functions
 
 function randomDisplayGenerator() {
+  //var itemsStored = localStorage.getItem('items');
   var rand0 = Math.floor(Math.random() * Item.allItems.length);
   var rand1 = Math.floor(Math.random() * Item.allItems.length);
   var rand2 = Math.floor(Math.random() * Item.allItems.length);
@@ -97,6 +105,7 @@ function randomDisplayGenerator() {
   Item.lastDisplayed[0] = rand0;
   Item.lastDisplayed[1] = rand1;
   Item.lastDisplayed[2] = rand2;
+
 }
 
 function getRandomColor() {
@@ -117,14 +126,15 @@ function generateResults(){
   var borderColors = [];
 
   for(var i = 0; i < Item.allItems.length; i++){
-    focusResults.push(Item.allItems[i].calculateVotePercent());
+    var percentStat = Math.round(Item.allItems[i].numVotes / Item.allItems[i].numViews * 100);
+    focusResults.push(percentStat);
     nameLabels.push(Item.allItems[i].itemName);
     barColors.push(getRandomColor());
     borderColors.push(getRandomColor());
 
   }
-  
-  
+
+
   var ctx = document.getElementById('myChart').getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'bar',
@@ -169,8 +179,8 @@ function clickHandler(event) {
   for(var i = 0; i < Item.allItems.length; i++){
     if(clickedImageName === Item.allItems[i].itemName){
       Item.allItems[i].numVotes++;
+      localStorage.setItem('items', JSON.stringify(Item.allItems));
       maxClicks--;
-      console.log('num votes for ' + Item.allItems[i].itemName + ' is ' + Item.allItems[i].numVotes);
     }
   }
 
@@ -179,6 +189,7 @@ function clickHandler(event) {
   if(maxClicks < 1){
     generateResults();
     removeEventListeners();
+    localStorage.setItem('items', JSON.stringify(Item.allItems));
   }
 
 }
